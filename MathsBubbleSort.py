@@ -31,7 +31,12 @@ def MainBubbleSortAlgorithm(AccessData, Order):
                             pre_sort_data.append(line.strip())
         else:
             for element in AccessData:
-                pre_sort_data.append(element)
+                if element.isdigit() == True: 
+                    pre_sort_data.append(int(element))
+                elif (isinstance(line,float)) == True:
+                    pre_sort_data.append(float(element))
+                else:
+                    pre_sort_data.append(element)
                 
         if Order.lower() in ['asc','ascending']:
             for i in range(len(pre_sort_data)):
@@ -42,7 +47,7 @@ def MainBubbleSortAlgorithm(AccessData, Order):
                         pre_sort_data[j] = temp
                 print(pre_sort_data)
             post_sort_data = [i for i in pre_sort_data]
-        elif Order.lower in ['desc','descending','dsc']:
+        elif Order.lower() in ['desc','descending','dsc']:
             for i in range(len(pre_sort_data)):
                 for j in range(len(pre_sort_data)-1):
                     if pre_sort_data[j] < pre_sort_data[j+1]:
@@ -66,6 +71,7 @@ def MainBubbleSortAlgorithm(AccessData, Order):
 #print(MainBubbleSortAlgorithm(EntryFile,Order))
 
 def GenerateData():
+    generated_array = []
     #Asks user if user wants data generated to be numbers or characters?
     choice = input("Numbers or Characters?: ")
     while choice.lower() not in ['numbers','n','number','num','characters','character','char','c']:
@@ -78,6 +84,7 @@ def GenerateData():
             num_array.append(random.randint(0,numrange))
         with open('GeneratedData.txt','w') as file:
             file.write('\n'.join(str(data) for data in num_array))
+        generated_array = num_array
     else:
         names_or_random = input("Do you want names, letters or random characters? (n/l/r): ")
         while names_or_random.lower() not in ['n','l','r','numbers','number','letter','letters','random','random characters']:
@@ -91,6 +98,7 @@ def GenerateData():
                 char_array.append(''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase) for x in range(charrange)))
             with open('GeneratedData.txt','w') as file:
                 file.write('\n'.join(str(data) for data in char_array))
+            generated_array = char_array
         #Alternatively, adds letters into Generated Data
         elif names_or_random in ['l','letter','letters']:
             letter_array = []
@@ -99,6 +107,7 @@ def GenerateData():
                 letter_array.append(''.join(random.choice(string.ascii_uppercase)))
             with open('GeneratedData.txt','w') as file:
                 file.write('\n'.join(str(data) for data in letter_array))
+            generated_array = letter_array
         #Otherwise, adds names into generated data
         else:
             no_names = int(input("Please input the number of names in your data: "))
@@ -112,20 +121,28 @@ def GenerateData():
                     count += 1
             with open('GeneratedData.txt','w') as file:
                 file.write('\n'.join(str(data) for data in name_array))
-    return 'GeneratedData.txt'
+            generated_array = name_array
+    return generated_array
 
 def ExercisesAndSolutions(*args):
     # The exercise_dict will have the key as the question and the value as pre-sorted data (index 0) and the result of the bubble sort/merge sort (index 1)
+    questions = int(input("How many questions do you want to generate?: "))
+    files_or_random_generated = input("Do you want to use files or random generated data?: ")
     exercise_dict = {}
     order = ['ASC','DESC']
-    for num ,count in enumerate(args):
-        exercise_data = []
-        with open(count,'r') as file:
-            for line in file:
-                if line != '\n':
-                    exercise_data.append(line.strip())
-        choice = random.choice(order).lower()
-        exercise_dict[num+1] = [exercise_data,MainBubbleSortAlgorithm(exercise_data,choice),choice]
+    if files_or_random_generated in ['files','f']:
+        for num ,count in enumerate(args):
+            exercise_data = []
+            with open(count,'r') as file:
+                for line in file:
+                    if line != '\n':
+                        exercise_data.append(line.strip())
+            choice = random.choice(order).lower()
+            exercise_dict[num+1] = [exercise_data,MainBubbleSortAlgorithm(exercise_data,choice),choice]
+    
+    elif files_or_random_generated in ['random_generated','random','random generated','generate','r']:
+        for i in range(questions):
+            exercise
         
     with open('Questions.txt','w') as file:
         for key, value in exercise_dict.items():
@@ -138,7 +155,7 @@ def ExercisesAndSolutions(*args):
     return exercise_dict
 
 GenerateData()
-print(ExercisesAndSolutions('GeneratedData.txt','PreSortData.txt','RandomNumber.txt'))
+print(ExercisesAndSolutions('GeneratedData.txt'))
 
 def SaveSolutions():
     pass
