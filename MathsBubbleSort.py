@@ -31,9 +31,9 @@ def MainBubbleSortAlgorithm(AccessData, Order):
                             pre_sort_data.append(line.strip())
         else:
             for element in AccessData:
-                if element.isdigit() == True: 
+                if (isinstance(element,int)) == True: 
                     pre_sort_data.append(int(element))
-                elif (isinstance(line,float)) == True:
+                elif (isinstance(element,float)) == True:
                     pre_sort_data.append(float(element))
                 else:
                     pre_sort_data.append(element)
@@ -60,7 +60,7 @@ def MainBubbleSortAlgorithm(AccessData, Order):
             file.write('\n'.join(str(data) for data in post_sort_data))
             
         return post_sort_data
-    except:
+    except IOError:
         print("Please re-run the code again.")
 
 
@@ -126,7 +126,6 @@ def GenerateData():
 
 def ExercisesAndSolutions(*args):
     # The exercise_dict will have the key as the question and the value as pre-sorted data (index 0) and the result of the bubble sort/merge sort (index 1)
-    questions = int(input("How many questions do you want to generate?: "))
     files_or_random_generated = input("Do you want to use files or random generated data?: ")
     exercise_dict = {}
     order = ['ASC','DESC']
@@ -141,8 +140,12 @@ def ExercisesAndSolutions(*args):
             exercise_dict[num+1] = [exercise_data,MainBubbleSortAlgorithm(exercise_data,choice),choice]
     
     elif files_or_random_generated in ['random_generated','random','random generated','generate','r']:
+        questions = int(input("How many questions do you want to generate?: "))
         for i in range(questions):
-            exercise
+            exercise_data = []
+            exercise_data = GenerateData()
+            choice = random.choice(order).lower()
+            exercise_dict[i+1] = [exercise_data, MainBubbleSortAlgorithm(exercise_data,choice),choice]
         
     with open('Questions.txt','w') as file:
         for key, value in exercise_dict.items():
@@ -150,18 +153,18 @@ def ExercisesAndSolutions(*args):
                 file.write('Question '+str(key)+':\nPlease sort the following data in descending order:\n'+str(value[0])+'\nSolution:\n\n')
             else:
                 file.write('Question '+str(key)+':\nPlease sort the following data in ascending order:\n'+str(value[0])+'\nSolution:\n\n')
+                
+    with open('Solutions.txt','w') as file:
+        for key, value in exercise_dict.items():
+            file.write('Solution for Question '+str(key)+':\n'+str(value[1])+'\n\n')
     
 
     return exercise_dict
 
-GenerateData()
 print(ExercisesAndSolutions('GeneratedData.txt'))
 
-def SaveSolutions():
+def HTML_Code():
     pass
 
 def main():
-    pass
-
-def QuickSortAlgorithm():
     pass
